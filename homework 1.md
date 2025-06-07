@@ -20,7 +20,6 @@ Context:
 
 Additional: How many current S&P 500 stocks have been in the index for more than 20 years? When stocks are added to the S&P 500, they usually experience a price bump as investors and index funds buy shares following the announcement.
 
-
 ```python
 # IMPORTS
 import numpy as np
@@ -39,7 +38,6 @@ from datetime import date
 
 ```
 
-
 ```python
 import pandas as pd
 
@@ -52,9 +50,6 @@ sp500_df = tables[0]  # The first table contains the list of S&P 500 companies
 sp500_df.head()
 
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -69,6 +64,7 @@ sp500_df.head()
     .dataframe thead th {
         text-align: right;
     }
+
 </style>
 <table border="1" class="dataframe">
   <thead>
@@ -144,16 +140,12 @@ sp500_df.head()
 </table>
 </div>
 
-
-
-
 ```python
 sp500_df['Year added'] = pd.to_datetime(sp500_df['Date added'], errors='coerce').dt.year
 ```
 
-
 ```python
-#quick check 
+#quick check
 year_added = sp500_df['Year added']
 valid_years = year_added.dropna()
 valid_years = valid_years[(valid_years >= 1900) & (valid_years <= 2025)]
@@ -165,8 +157,6 @@ else:
 ```
 
     data valid
-
-
 
 ```python
 # Count the number of companies added each year (excluding 1957)
@@ -181,8 +171,6 @@ print("Q: Year had the highest number of addition\nA:", year_counts.nlargest(1).
     Q: Year had the highest number of addition
     A: 2017
 
-
-
 ```python
 #add the number of years
 sp500_df['Years in sp500'] = abs((datetime.today() - pd.to_datetime(sp500_df['Date added'], errors='coerce')).dt.days) // 365
@@ -194,7 +182,6 @@ print("Q: How many current S&P 500 stocks have been in the index for more than 2
 
     Q: How many current S&P 500 stocks have been in the index for more than 20 years?
     A: 215
-
 
 Question 2. [Macro] Indexes YTD (as of 1 May 2025)
 How many indexes (out of 10) have better year-to-date returns than the US (S&P 500) as of May 1, 2025?
@@ -222,7 +209,6 @@ Reference: Yahoo Finance World Indices - https://finance.yahoo.com/world-indices
 
 Additional: How many of these indexes have better returns than the S&P 500 over 3, 5, and 10 year periods? Do you see the same trend? Note: For simplicity, ignore currency conversion effects.)
 
-
 ```python
 from datetime import date, timedelta
 
@@ -248,7 +234,6 @@ def get_report_by_date(data,ticker_to_name, start=(date.today() - timedelta(days
     ytd_returns_ranked['YTD Return (%)'] = ytd_returns_ranked['YTD Return (%)'].map('{:.2f}%'.format)
     print(ytd_returns_ranked.to_string(index=False))
 ```
-
 
 ```python
 import yfinance as yf
@@ -279,15 +264,13 @@ ticker_to_name = {v: k for k, v in index_tickers.items()}
 
     [*********************100%***********************]  11 of 11 completed
 
-
-
 ```python
 
 # get data from 1st jan 2025 to 1st may 2025
 get_report_by_date(data_filled,ticker_to_name,'2025-01-01','2025-05-01')
 ```
 
-    Period for indexes: 2025-01-01 to 2025-05-01 
+    Period for indexes: 2025-01-01 to 2025-05-01
      Rank                       Index YTD Return (%)
         1         Mexico - IPC Mexico         13.62%
         2               Germany - DAX         13.00%
@@ -301,9 +284,7 @@ get_report_by_date(data_filled,ticker_to_name,'2025-01-01','2025-05-01')
        10     United States - S&P 500         -4.72%
        11          Japan - Nikkei 225         -8.63%
 
-
 Bonus question
-
 
 ```python
 # 3 years ago
@@ -312,7 +293,7 @@ three_years_ago = (date.today() - timedelta(days=3*365)).strftime("%Y-%m-%d")
 get_report_by_date(data_filled,ticker_to_name,three_years_ago,today)
 ```
 
-    Period for indexes: 2022-06-08 to 2025-06-07 
+    Period for indexes: 2022-06-08 to 2025-06-07
      Rank                       Index YTD Return (%)
         1               Germany - DAX         68.24%
         2            India - Nifty 50         52.87%
@@ -326,8 +307,6 @@ get_report_by_date(data_filled,ticker_to_name,three_years_ago,today)
        10 Hong Kong - HANG SENG INDEX          8.08%
        11  China - Shanghai Composite          3.72%
 
-
-
 ```python
 # 5 years ago
 today = date.today().strftime("%Y-%m-%d")
@@ -335,7 +314,7 @@ three_years_ago = (date.today() - timedelta(days=5*365)).strftime("%Y-%m-%d")
 get_report_by_date(data_filled,ticker_to_name,three_years_ago,today)
 ```
 
-    Period for indexes: 2020-06-08 to 2025-06-07 
+    Period for indexes: 2020-06-08 to 2025-06-07
      Rank                       Index YTD Return (%)
         1            India - Nifty 50        145.91%
         2               Germany - DAX         89.59%
@@ -349,8 +328,6 @@ get_report_by_date(data_filled,ticker_to_name,three_years_ago,today)
        10  China - Shanghai Composite         15.24%
        11 Hong Kong - HANG SENG INDEX         -3.97%
 
-
-
 ```python
 # 10 years ago
 today = date.today().strftime("%Y-%m-%d")
@@ -358,7 +335,7 @@ three_years_ago = (date.today() - timedelta(days=10*365)).strftime("%Y-%m-%d")
 get_report_by_date(data_filled,ticker_to_name,three_years_ago,today)
 ```
 
-    Period for indexes: 2015-06-10 to 2025-06-07 
+    Period for indexes: 2015-06-10 to 2025-06-07
      Rank                       Index YTD Return (%)
         1            India - Nifty 50        207.75%
         2     United States - S&P 500        185.03%
@@ -371,7 +348,6 @@ get_report_by_date(data_filled,ticker_to_name,three_years_ago,today)
         9   United Kingdom - FTSE 100         29.39%
        10 Hong Kong - HANG SENG INDEX        -10.85%
        11  China - Shanghai Composite        -33.70%
-
 
 Question 3. [Index] S&P 500 Market Corrections Analysis
 Calculate the median duration (in days) of significant market corrections in the S&P 500 index.
@@ -404,19 +380,14 @@ Hint (use this data to compare with your results): Here is the list of top 10 la
 2022-01-03 to 2022-10-12: 25.4% drawdown over 282 days
 1966-02-09 to 1966-10-07: 22.2% drawdown over 240 days
 
-
 ```python
 import numpy as np
 from datetime import datetime
 ```
 
-
 ```python
 # Download S&P 500 historical data (1950-present)
 sp500 = yf.download("^GSPC", start="1950-01-01")['Close']
-
-#fill empty using ffill
-#sp500_filled = sp500.ffill
 
 # Find all-time highs
 all_time_highs = sp500.cummax()
@@ -471,9 +442,9 @@ print(corrections_df.sort_values('drawdown_%', ascending=False).head(10))
     0.50    34
     0.75    76
     Name: duration_days, dtype: int64
-    
+
     Median duration (days): 34
-    
+
     Top 10 largest corrections by drawdown:
             start   min_date        end  drawdown_%  duration_days
     66 2007-10-09 2009-03-09 2013-03-28   56.886671            517
@@ -487,7 +458,122 @@ print(corrections_df.sort_values('drawdown_%', ascending=False).head(10))
     81 2022-01-03 2022-10-12 2024-01-19   26.091520            282
     19 1966-02-09 1966-10-07 1967-05-04   22.391860            240
 
+Question 4. [Stocks] Earnings Surprise Analysis for Amazon (AMZN)
+Calculate the median 2-day percentage change in stock prices following positive earnings surprises days.
 
+Steps:
+
+1. Load earnings data from CSV (ha1_Amazon.csv) containing earnings dates, EPS estimates, and actual EPS. Make sure you are using the correct delimiter to read the data, such as in this command python pandas.read_csv("ha1_Amazon.csv", delimiter=';')
+2. Download complete historical price data using yfinance
+3. Calculate 2-day percentage changes for all historical dates: for each sequence of 3 consecutive trading days (Day 1, Day 2, Day 3), compute the return as Close_Day3 / Close_Day1 - 1. (Assume Day 2 may correspond to the earnings announcement.)
+4. Identify positive earnings surprises (where "actual EPS > estimated EPS"). Both fields should be present in the file. You should obtain 36 data points for use in the descriptive analysis (median) later.
+5. Calculate 2-day percentage changes following positive earnings surprises. Show your answer in % (closest number to the 2nd digit): return \* 100.0
+6. (Optional) Compare the median 2-day percentage change for positive surprises vs. all historical dates. Do you see the difference?
+   Context: Earnings announcements, especially when they exceed analyst expectations, can significantly impact stock prices in the short term.
+
+Reference: Yahoo Finance earnings calendar - https://finance.yahoo.com/calendar/earnings?symbol=AMZN
+
+Additional: Is there a correlation between the magnitude of the earnings surprise and the stock price reaction? Does the market react differently to earnings surprises during bull vs. bear markets?)
+
+```python
+from datetime import datetime
+
+```
+
+```python
+# 1. Load earnings data
+earnings = pd.read_csv("ha1_Amazon.csv", delimiter=';')
+earnings['test_date'] = pd.to_datetime(earnings['Earnings Date'], format='mixed')
+earnings['Date'] = pd.to_datetime(earnings['test_date'].dt.strftime('%Y-%m-%d'))
+
+
+# 2. Download historical price data
+amzn = yf.download("AMZN",interval='1d',period='max')
+amzn = amzn[['Close']].reset_index()
+amzn['Date'] = pd.to_datetime(amzn['Date'])
+amzn.columns = amzn.columns.droplevel(1)
+
+```
+
+```python
+#sanity check
+len(earnings), len(amzn)
+```
+
+    (117, 7060)
+
+```python
+merged_data = pd.merge(amzn, earnings, on='Date', how='left')
+merged_data['2_day_return'] = 0.0
+
+date_match_df = amzn['Date'].isin(earnings['Date']).reindex(amzn.index, fill_value=False)
+
+merged_data['cleaned_actual_eps'] = pd.to_numeric(merged_data['Reported EPS'].str.replace('$', '', regex=False), errors='coerce')
+merged_data['cleaned_estimate_eps'] = pd.to_numeric(merged_data['EPS Estimate'].str.replace('$', '', regex=False), errors='coerce')
+merged_data['cleaned_actual_eps'].fillna(0, inplace=True)
+merged_data['cleaned_estimate_eps'].fillna(0, inplace=True)
+
+#calculate the 2-day return around the earnings date
+for i in range(len(date_match_df)-1):
+    if date_match_df[i] == True:
+        close_day = merged_data['Close'][i]
+        close_day_after_2 = merged_data['Close'][i+2] if i + 2 < len(merged_data) else None
+        earning_day_rate = close_day_after_2 / close_day - 1 if close_day is not None else None
+        merged_data.loc[i,'2_day_return'] = earning_day_rate
+
+    i+= 1
+```
+
+```python
+#sanity check
+len(merged_data)
+```
+
+    7060
+
+```python
+
+positive_earning_surpises = merged_data[merged_data['cleaned_actual_eps'] > merged_data['cleaned_estimate_eps']]
+# Calculate percentiles
+percentiles = positive_earning_surpises['2_day_return'].quantile([0.25, 0.5, 0.75]).astype(float)
+print("positive_earning_surpises percentiles:")
+print(percentiles*100)
+
+# Show the median duration
+print(f"\nMedian positive_earning_surpises: {percentiles.loc[0.5]*100}")
+```
+
+```python
+all_amzn_data = merged_data.copy()
+```
+
+```python
+#calculate the 2-day return around the earnings date for all_amzn_data
+for i in range(len(date_match_df)-1):
+
+    close_day = all_amzn_data['Close'][i]
+    close_day_after_2 = all_amzn_data['Close'][i+2] if i + 2 < len(all_amzn_data) else 0
+    earning_day_rate = close_day_after_2 / close_day - 1 if close_day is not None else None
+    all_amzn_data.loc[i,'2_day_return'] = earning_day_rate
+
+    i+= 1
+
+# Calculate percentiles
+percentiles = all_amzn_data['2_day_return'].quantile([0.25, 0.5, 0.75]).astype(float)
+print("positive_earning_surpises percentiles:")
+print(percentiles*100)
+
+# Show the median duration
+print(f"\nMedian positive_earning_surpises: {percentiles.loc[0.5]*100}")
+```
+
+    positive_earning_surpises percentiles:
+    0.25   -1.802157
+    0.50    0.165817
+    0.75    2.151773
+    Name: 2_day_return, dtype: float64
+
+    Median positive_earning_surpises: 0.16581674487468057
 
 ```python
 
